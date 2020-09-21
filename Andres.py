@@ -3,6 +3,9 @@ import random
 def isPrime(p, k):
     """Checks if an integer is a prime number using Fermat's Little Theorem"""
 
+    # Special case check
+    if p < 1: return False
+
     prime = True
 
     while k>0:
@@ -20,7 +23,10 @@ def isPrime(p, k):
     return prime
 
 def randomPrime(min, max):
-    "Return a random prime number between input min and max"
+    """Return a random prime number between input min and max"""
+    if min > max or min < 0:
+        raise ValueError("Incorrect arguments")
+
     p = 6
     while not isPrime(p, 30):
         p = random.randint(min, max)
@@ -110,7 +116,3 @@ def getKeys():
     print("d = {}".format(d))
 
     return e,d,n
-
-#Test values for encrypt/decrypt
-a = encrypt(5,119,"Hello")
-decrypt(77,119,a)
