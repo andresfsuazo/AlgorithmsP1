@@ -50,6 +50,32 @@ def isMI(a, b):
     """Returns true if b is the multiplicative inverse of a"""
     pass
 
+def encrypt(e, n, value):
+    #C = M^e mod n
+
+    #Divide message into character and convert to ascii
+    msg = [ord(i) for i in value]
+    print("Before encrypt: " + str(msg))
+
+    #Encrypt each character and create a space separated string
+    msg = [str((pow(i,e) % n)) + " " for i in msg]
+    msg = "".join(msg)
+    print("After encrypt: " + msg)
+    return msg
+
+def decrypt(d, n, value):
+    #M = C^d mod n
+
+    #Divide string into separate integers
+    msg = [int(i) for i in value.split(" ")[:-1]]
+    print("Before decrypt: " + str(msg))
+
+    #Decrypt list of integers and merge into single message
+    msg = [str((pow(i,d) % n)) + " " for i in msg]
+    msg = "".join(msg)
+    print("After decrypt: " + msg)
+    return msg
+
 def getKeys():
 
     primeMin = 1000
@@ -83,4 +109,6 @@ def getKeys():
             found = True
     print("d = {}".format(d))
 
-getKeys()
+#Test values for encrypt/decrypt
+a = encrypt(5,119,"Hello")
+decrypt(77,119,a)
