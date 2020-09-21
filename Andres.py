@@ -54,6 +54,9 @@ def isRelativelyPrime(e,r):
 
 def isMI(a, b):
     """Returns true if b is the multiplicative inverse of a"""
+    return True
+
+def MI():
     pass
 
 def encrypt(e, n, value):

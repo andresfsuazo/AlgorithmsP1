@@ -44,5 +44,45 @@ class PrimeGenerationTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             randomPrime(100, 10)
 
+class CommonDivisorTest(unittest.TestCase):
+
+    def test_gcd(self):
+        print("Test Common Divisor...")
+        self.assertEqual(gcd(36, 60), 12)
+
+class ExtendedCommonDivisorTest(unittest.TestCase):
+
+    def test_etxendedgcd(self):
+        print("Test Extended Common Divisor...")
+        self.assertEqual(extendedgcd(36, 60)[2], 12)
+
+class RelativelyPrimeTest(unittest.TestCase):
+
+    def test_not_relativelyPrime(self):
+        print("Test Relatively Prime...")
+        self.assertFalse(isRelativelyPrime(12, 14))
+
+    def test_relativelyPrime(self):
+        print("Test Relatively Prime...")
+        self.assertTrue(isRelativelyPrime(12, 13))
+
+class MultiplicativeInverseTest(unittest.TestCase):
+
+    def test_multiplicativeInverse(self):
+        print("Test Multiplicative Inverse...")
+        #self.assertEqual(MI(12, 14))
+
+    def test_not_multiplicativeInverse(self):
+        print("Test Multiplicative Inverse...")
+        #self.assertEqual(MI(12, 14))
+
+    def test_is_multiplicativeInverse(self):
+        print("Test Multiplicative Inverse Check...")
+        #self.assertTrue(isMI(12, 14))
+
+    def test_is_not_multiplicativeInverse(self):
+        print("Test Multiplicative Inverse Check...")
+        #self.assertFalse(isMI(12, 14))
+
 if __name__ == '__main__':
     unittest.main()
