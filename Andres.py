@@ -71,7 +71,7 @@ def decrypt(d, n, value):
     print("Before decrypt: " + str(msg))
 
     #Decrypt list of integers and merge into single message
-    msg = [str((pow(i,d) % n)) + " " for i in msg]
+    msg = [chr((pow(i,d) % n)) for i in msg]
     msg = "".join(msg)
     print("After decrypt: " + msg)
     return msg
@@ -108,6 +108,8 @@ def getKeys():
         if isMI(d, fn):
             found = True
     print("d = {}".format(d))
+
+    return e,d,n
 
 #Test values for encrypt/decrypt
 a = encrypt(5,119,"Hello")
