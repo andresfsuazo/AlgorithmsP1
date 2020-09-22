@@ -52,12 +52,15 @@ def isRelativelyPrime(e,r):
     """Returns true if q and p are relatively prime"""
     return gcd(e, r) == 1
 
-def isMI(a, b):
-    """Returns true if b is the multiplicative inverse of a"""
-    return True
-
 def MI(a,b):
-    return extendedgcd(a, b)[1]
+    """Returns the multiplicative inverse of a"""
+    i = 0
+    while True:
+        private = (1 + (i * b)) / a
+        if private.is_integer():
+            return int(private)
+        else:
+            i += 1
 
 class RSA():
 
@@ -76,12 +79,14 @@ class RSA():
 
         # Divide message into character and convert to ascii
         msg = [ord(i) for i in value]
-        print("Before encrypt: " + str(msg))
+
+        #print("Before encrypt: " + str(msg))
 
         # Encrypt each character and create a space separated string
-        msg = [str((pow(i, self.e) % self.n)) + " " for i in msg]
+        msg = [str(pow(i, self.e, self.n)) + " " for i in msg]
         msg = "".join(msg)
-        print("After encrypt: " + msg)
+
+        #print("After encrypt: " + msg)
         return msg
 
     def decrypt(self, value):
@@ -89,10 +94,11 @@ class RSA():
 
         # Divide string into separate integers
         msg = [int(i) for i in value.split(" ")[:-1]]
-        print("Before decrypt: " + str(msg))
+
+        #print("Before decrypt: " + str(msg))
 
         # Decrypt list of integers and merge into single message
-        msg = [chr((pow(i, self.d) % self.n)) for i in msg]
+        msg = [chr(pow(i, self.d, self.n)) for i in msg]
         msg = "".join(msg)
         print("After decrypt: " + msg)
         return msg
@@ -100,7 +106,7 @@ class RSA():
     def generateKeys(self):
 
         primeMin = 1000
-        primeMax = 100000
+        primeMax = 10000
 
         p = randomPrime(primeMin, primeMax)
         q = randomPrime(primeMin, primeMax)
@@ -124,9 +130,11 @@ class RSA():
 
         # d has to be the multiplicative inverse of e && less than fn
         d = MI(e,fn)
+        # Avoid negative values
+
+
         #print("d = {}".format(d))
 
 
         self.keys = True
         self.e , self.d, self.n = e,d,n
-

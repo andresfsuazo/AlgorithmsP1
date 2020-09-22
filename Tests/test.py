@@ -1,5 +1,5 @@
 import unittest
-from Andres import *
+from RSA import *
 
 """Unit Tests for entire application. Should be divided into separate files later"""
 
@@ -9,19 +9,19 @@ class PrimeTest(unittest.TestCase):
         self.k = 30
 
     def test_180_isPrime(self):
-        print("Test on composite number...")
+        print("Test if composite number is prime...")
         self.assertFalse(isPrime(180, self.k))
 
     def test_7_isPrime(self):
-        print("Test on prime number...")
+        print("Test if prime number is prime...")
         self.assertTrue(isPrime(7, self.k))
 
     def test_negative_isPrime(self):
-        print("Test on negative number...")
+        print("Test if negative number is prime...")
         self.assertFalse(isPrime(-7, self.k))
 
     def test_zero_isPrime(self):
-        print("Test on zero...")
+        print("Test if zero is prime...")
         self.assertFalse(isPrime(0, self.k))
 
 class PrimeGenerationTest(unittest.TestCase):
@@ -30,17 +30,17 @@ class PrimeGenerationTest(unittest.TestCase):
         self.k = 30
 
     def test_whole_randomPrime(self):
-        print("Test on whole number...")
+        print("Test prime generation...")
         result = randomPrime(1, 100)
         self.assertTrue(isPrime(result, self.k))
 
     def test_integers_randomPrime(self):
-        print("Test on integers...")
+        print("Test prime generation (negative input)...")
         with self.assertRaises(ValueError):
             randomPrime(-4, 15)
 
     def test_inverted_randomPrime(self):
-        print("Test on min/max inverted...")
+        print("Test prime generation (min/max inverted)...")
         with self.assertRaises(ValueError):
             randomPrime(100, 10)
 
@@ -59,7 +59,7 @@ class ExtendedCommonDivisorTest(unittest.TestCase):
 class RelativelyPrimeTest(unittest.TestCase):
 
     def test_not_relativelyPrime(self):
-        print("Test Relatively Prime...")
+        print("Test Not Relatively Prime...")
         self.assertFalse(isRelativelyPrime(12, 14))
 
     def test_relativelyPrime(self):
@@ -70,19 +70,11 @@ class MultiplicativeInverseTest(unittest.TestCase):
 
     def test_multiplicativeInverse(self):
         print("Test Multiplicative Inverse...")
-        #self.assertEqual(MI(12, 14))
+        self.assertEqual(MI(3, 26), 9)
 
     def test_not_multiplicativeInverse(self):
         print("Test Multiplicative Inverse...")
-        #self.assertEqual(MI(12, 14))
-
-    def test_is_multiplicativeInverse(self):
-        print("Test Multiplicative Inverse Check...")
-        #self.assertTrue(isMI(12, 14))
-
-    def test_is_not_multiplicativeInverse(self):
-        print("Test Multiplicative Inverse Check...")
-        #self.assertFalse(isMI(12, 14))
+        self.assertEqual(MI(13, 45), 7)
 
 if __name__ == '__main__':
     unittest.main()

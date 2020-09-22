@@ -1,5 +1,7 @@
-from UserInterface import UserInterface
+
 from utils import *
+from os import path
+import json
 
 def menu_display(func):
     def inner(current):
@@ -12,13 +14,21 @@ def build_menu(current_menu):
     for key in current_menu:
         print("{}. {}".format(key, single_dict_key(current_menu[key])))
 
-class CMDInterface(UserInterface):
+class CMDInterface():
     def __init__(self, rsa):
-        super().__init__(rsa)
-        self.mainMenu = {}
         self.current_menu = {}
-        self.inputs = []
         self.mainMenu = {}
+        self.rsa = rsa
+        self.settings = {}
+        self.set_settings()
+        self.msg = ""
+
+    def set_settings(self):
+        """Configure interface using an external, user editable file"""
+        if path.exists('menu_settings.json'):
+            self.settings = json.load(open('menu_settings.json'))
+
+        self.mainMenu = self.settings['main_menu']
 
     def display_menu(self):
         self.mainMenu = self.settings['main_menu']
@@ -37,6 +47,8 @@ class CMDInterface(UserInterface):
             print("n = " + str(self.rsa.n) + "\n")
         else:
             print("Keys Not Generated Yet!\n")
+
+        print("Message: " + self.msg + "\n")
 
         # Set current menu to return to if any input problems
         self.current_menu = "main_menu"
@@ -117,10 +129,7 @@ class CMDInterface(UserInterface):
             input("Generate Keys First!\npress any key to go back: ")
             self.main_menu()
 
-        results = [
-            self.msg
-        ]
-        self.results_page(results)
+        self.main_menu()
 
     def decrypt(self):
         # If login credential accepted go to home menu
@@ -130,21 +139,15 @@ class CMDInterface(UserInterface):
             input("Generate Keys First!\npress any key to go back: ")
             self.main_menu()
 
-        results = [
-            self.msg
-        ]
-        self.results_page(results)
+        self.main_menu()
 
-    def enterMessage(self):
+    def setMessage(self):
         inp = ""
-        while len(inp) < 0:
+        while len(inp) < 1:
             inp = input("Enter Message: ")
 
         self.msg = inp
         self.main_menu()
-
-    def setMessage(self):
-        self.sub_menu("message")
 
     def generateKeys(self):
         self.rsa.generateKeys()

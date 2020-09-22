@@ -15,10 +15,5 @@
     }
   },
   "sub_menu": {
-    "message": {
-      "1": {
-        "Enter Message": "enterMessage"
-      }
-    }
   }
 }
