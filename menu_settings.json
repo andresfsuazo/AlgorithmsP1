@@ -1,0 +1,24 @@
+{
+  "interaction mode": 0,
+  "main_menu": {
+    "1": {
+      "Generate Keys": "generateKeys"
+    },
+    "2": {
+      "Set Message": "setMessage"
+    },
+    "3": {
+      "Encrypt": "encrypt"
+    },
+    "4": {
+      "Decrypt": "decrypt"
+    }
+  },
+  "sub_menu": {
+    "message": {
+      "1": {
+        "Enter Message": "enterMessage"
+      }
+    }
+  }
+}
