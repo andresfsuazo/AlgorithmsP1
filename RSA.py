@@ -70,11 +70,19 @@ class RSA():
         self.d = 0
         self.n = 0
         self.keys = False
+        self.signature = ""
+        self.generatedSignature = ""
 
     def keysGenerated(self):
         return self.keys
 
-    def encrypt(self, value):
+    def signatureGenerated(self):
+        return len(self.generatedSignature) != 0
+
+    def getPrivateKey(self):
+        return self.d
+
+    def encrypt(self, value, signature = False):                                                   #Function for enryption
         # C = M^e mod n
 
         # Divide message into character and convert to ascii
@@ -84,29 +92,49 @@ class RSA():
 
         # Encrypt each character and create a space separated string
         msg = [str(pow(i, self.e, self.n)) + " " for i in msg]
-        msg = "".join(msg)
 
+        if signature:
+            msg = [chr(int(i)) for i in msg]
+
+        msg = "".join(msg)
         #print("After encrypt: " + msg)
         return msg
 
-    def decrypt(self, value):
+    def decrypt(self, value, signature = False):                                                   #Function for decryption
         # M = C^d mod n
 
+        msg = value
+
         # Divide string into separate integers
-        msg = [int(i) for i in value.split(" ")[:-1]]
+        if signature:
+            msg = [str(ord(i)) + " " for i in value]
+            msg = "".join(msg)
+
+        msg = [int(i) for i in msg.split(" ")[:-1]]
 
         #print("Before decrypt: " + str(msg))
 
         # Decrypt list of integers and merge into single message
         msg = [chr(pow(i, self.d, self.n)) for i in msg]
         msg = "".join(msg)
-        print("After decrypt: " + msg)
+        #print("After decrypt: " + msg)
         return msg
+
+    def GenerateSignature(self):                                                #Function for Digital Signature
+        #S = md(modn)
+        self.generatedSignature = self.decrypt(self.signature, True)
+
+    def AuthenticateSignature(self):                                            #Function to Autheticate Signature
+        authenticated = self.encrypt(self.generatedSignature, True)
+        if authenticated == self.signature:
+            return True
+        else:
+            return False
 
     def generateKeys(self):
 
-        primeMin = 1000
-        primeMax = 10000
+        primeMin = 10
+        primeMax = 1000
 
         p = randomPrime(primeMin, primeMax)
         q = randomPrime(primeMin, primeMax)

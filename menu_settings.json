@@ -12,6 +12,12 @@
     },
     "4": {
       "Decrypt": "decrypt"
+    },
+    "5": {
+      "Generate Signature": "setSignature"
+    },
+    "6": {
+      "Authenticate Signature": "authSignature"
     }
   },
   "sub_menu": {

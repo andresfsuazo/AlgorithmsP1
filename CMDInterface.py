@@ -19,7 +19,31 @@ class CMDInterface():
         self.current_menu = {}
         self.mainMenu = {}
         self.rsa = rsa
-        self.settings = {}
+        self.settings = {
+                          "interaction mode": 0,
+                          "main_menu": {
+                            "1": {
+                              "Generate Keys": "generateKeys"
+                            },
+                            "2": {
+                              "Set Message": "setMessage"
+                            },
+                            "3": {
+                              "Encrypt": "encrypt"
+                            },
+                            "4": {
+                              "Decrypt": "decrypt"
+                            },
+                            "5": {
+                              "Generate Signature": "setSignature"
+                            },
+                            "6": {
+                              "Authenticate Signature": "authSignature"
+                            }
+                          },
+                          "sub_menu": {
+                          }
+                        }
         self.set_settings()
         self.msg = ""
 
@@ -27,7 +51,9 @@ class CMDInterface():
         """Configure interface using an external, user editable file"""
         if path.exists('menu_settings.json'):
             self.settings = json.load(open('menu_settings.json'))
-
+        else:
+            with open("menu_settings.json", "w") as file:
+                json.dump(self.settings, file, indent=4)
         self.mainMenu = self.settings['main_menu']
 
     def display_menu(self):
@@ -46,7 +72,12 @@ class CMDInterface():
             print("d = " + str(self.rsa.d))
             print("n = " + str(self.rsa.n) + "\n")
         else:
-            print("Keys Not Generated Yet!\n")
+            print("Keys Not Generated!\n")
+
+        if self.rsa.signatureGenerated():
+            print("Digital Signature: " + self.rsa.generatedSignature)
+        else:
+            print("Digital Signature Not Generated!"+ self.rsa.signature + self.rsa.generatedSignature)
 
         print("Message: " + self.msg + "\n")
 
@@ -95,7 +126,7 @@ class CMDInterface():
                 exit_app()
                 return
             elif ch == "1":
-                self.back()
+                self.main_menu()
                 return
             else:
                 print("Invalid selection, please try again.\n")
@@ -152,6 +183,26 @@ class CMDInterface():
     def generateKeys(self):
         self.rsa.generateKeys()
         self.main_menu()
+
+    def setSignature(self):
+        inp = ""
+        while len(inp) < 1:
+            inp = input("Enter signature: ")
+
+        self.rsa.signature = inp
+        self.rsa.GenerateSignature()
+        self.main_menu()
+
+    def authSignature(self):
+        result = self.rsa.AuthenticateSignature()
+        toPost = ""
+
+        if result:
+            toPost = ["Signature authenticated with key"]
+        else:
+            toPost = ["Signature authentication failed with key"]
+
+        self.results_page(toPost)
 
     def back(self):
         self.sub_menu("home")
